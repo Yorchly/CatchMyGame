@@ -2,16 +2,16 @@ import logging
 
 from telegram.ext import Updater, CommandHandler
 
-from app.settings import BOT_TOKEN
-
+from app.settings import BOT_TOKEN, WEBS
+from app.utils import search_in_api
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
 
 class TelegramBot:
     __help_text = "Los comandos que posee el bot son los siguientes (sin las comillas '' especificadas):\n\n " \
-                  "- '/search [nombre_juego]' -> Busca el juego en una de las páginas precargadas en la " \
-                  "aplicación\n\n " \
+                  "- '/search [nombre_juego]' -> Busca el juego en las páginas precargadas en el " \
+                  "bot. Ej: '/search Nier Automata'.\n\n " \
                   "- '/help' -> Muestra los comandos disponibles para el bot.\n\n "
 
     def __init__(self):
@@ -29,8 +29,8 @@ class TelegramBot:
         :param context:
         :return:
         """
-        start_message = "Bienvenido al bot CatchMyGame, {}. \n\nEn este bot puede encontrar el juego deseado en una " \
-                        "de las páginas precargadas y ver en dónde está más barato " \
+        start_message = "Bienvenido al bot CatchMyGame, {}. \n\nEn este bot puede encontrar el juego deseado en " \
+                        "las páginas precargadas y ver en dónde está más barato " \
                         "\U0001F60D\U0001F4B8.\n\n".format(update.effective_user.name) + self.__help_text + \
                         "Espero que lo disfrute. \U0001F31A"
         context.bot.send_message(
@@ -52,8 +52,9 @@ class TelegramBot:
 
     @staticmethod
     def __search(update, context):
-        # TODO -> Add search method.
-        pass
+        game_name = "+".join(list(map(lambda x: x.lower(), context.args)))
+        for web in WEBS:
+            context.bot.send_message(chat_id=update.effective_chat.id, text=search_in_api(game_name, web))
 
     def __add_handlers(self):
         """
