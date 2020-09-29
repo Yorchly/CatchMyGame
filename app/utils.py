@@ -1,5 +1,5 @@
 from decimal import Decimal
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import requests
 
@@ -13,17 +13,16 @@ def get_cached_data(game_name):
     :type game_name: str
     :return: dict with game info if game is cached, False if not.
     """
-    if game_name in CACHED_DATA:
-        return CACHED_DATA.get(game_name)
-    else:
-        return False
+    return CACHED_DATA.get(game_name, False)
 
 
-def set_game_in_cached_data(game_name, link, price, currency):
+def set_game_in_cached_data(game_name, web, link, price, currency):
     """
     Set game data in dict of cached data.
     :param game_name:
     :type game_name: str
+    :param web:
+    :type web: str
     :param link:
     :type link: str
     :param price:
@@ -33,9 +32,11 @@ def set_game_in_cached_data(game_name, link, price, currency):
     :return:
     """
     data = {
-        "link": link,
-        "price": price,
-        "currency": currency,
+        web: {
+            "link": link,
+            "price": price,
+            "currency": currency,
+        },
         "last_update": datetime.now()
     }
     if game_name in CACHED_DATA:
@@ -51,12 +52,15 @@ def check_last_update_cached_data(game_name):
     :type game_name: str
     :return: True in case that last time data was updated is greater than TIME_CACHED_DATA minutes, False if it's not.
     """
-    diff = datetime.now() - CACHED_DATA.get(game_name).get("last_update")
+    try:
+        diff = datetime.now() - CACHED_DATA.get(game_name).get("last_update")
 
-    if (diff.seconds / 60) >= TIME_CACHED_DATA:
+        if (diff.seconds / 60) >= TIME_CACHED_DATA:
+            return True
+        else:
+            return False
+    except AttributeError:
         return True
-    else:
-        return False
 
 
 def search_in_api(game_name, web):
@@ -66,26 +70,35 @@ def search_in_api(game_name, web):
     :param web:
     :return:
     """
-    response = requests.get(SEARCH_URL+"{}+{}".format(game_name, web))
-    try:
-        response.raise_for_status()
-    except requests.exceptions.HTTPError:
-        return "Error buscando en la API"
+    game_cached = get_cached_data(game_name)
 
-    parsed_response = response.json()
-    name = parsed_response.get("items")[0].get("title")
-    link = parsed_response.get("items")[0].get("link")
-    if web != "amazon":
-        price = Decimal(parsed_response.get("items")[0].get("pagemap").get("offer")[0].get("price"))
-        currency = parsed_response.get("items")[0].get("pagemap").get("offer")[0].get("pricecurrency")
+    if game_cached and web in game_cached and not check_last_update_cached_data(game_name):
+        price = game_cached.get(web).get("price")
+        currency = game_cached.get(web).get("currency")
+        link = game_cached.get(web).get("link")
     else:
-        price = Decimal(0)
-        currency = "No se ha podido obtener"
+        response = requests.get(SEARCH_URL + "{}+{}".format(game_name, web))
+        try:
+            response.raise_for_status()
+        except requests.exceptions.HTTPError:
+            return "Error buscando en la API"
 
-    return "Nombre: {}\n" \
-           "Precio: {}\n" \
+        parsed_response = response.json()
+        link = parsed_response.get("items")[0].get("link")
+
+        # TODO -> Implement Web Scrapping for Amazon.
+        if web != "amazon":
+            price = Decimal(parsed_response.get("items")[0].get("pagemap").get("offer")[0].get("price"))
+            currency = parsed_response.get("items")[0].get("pagemap").get("offer")[0].get("pricecurrency")
+        else:
+            price = Decimal(0)
+            currency = "No se ha podido obtener"
+
+        set_game_in_cached_data(game_name, web, link, price, currency)
+
+    return "Precio: {}\n" \
            "Moneda: {}\n" \
-           "Enlace: {}".format(name, price if price > Decimal(0) else "No se ha podido obtener", currency, link)
+           "Enlace: {}".format(price if price > Decimal(0) else "No se ha podido obtener", currency, link)
 
 
 def search_in_game_api(game_name):
@@ -95,7 +108,7 @@ def search_in_game_api(game_name):
     :param game_name:
     :return:
     """
-    response = requests.get(GAMES_API+game_name).json()
+    response = requests.get(GAMES_API + game_name).json()
 
     if response.get("redirect"):
         return True
