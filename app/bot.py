@@ -2,8 +2,8 @@ import logging
 
 from telegram.ext import Updater, CommandHandler
 
-from app.settings import BOT_TOKEN, WEBS
-from app.utils import search_in_api
+from app.settings import BOT_TOKEN, WEBS, PLATFORMS
+from app.utils import search_in_api, search_in_game_api
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 
@@ -52,9 +52,23 @@ class TelegramBot:
 
     @staticmethod
     def __search(update, context):
-        game_name = "+".join(list(map(lambda x: x.lower(), context.args)))
-        for web in WEBS:
-            context.bot.send_message(chat_id=update.effective_chat.id, text=search_in_api(game_name, web))
+        game_name = ""
+        for element in context.args:
+            lower_element = element.lower()
+            # Excluding platform from game name in order to search it into game API.
+            if lower_element not in PLATFORMS:
+                game_name += lower_element
+
+        game_exists = search_in_game_api(game_name)
+
+        if game_exists:
+            game_name_for_search = "+".join(list(map(lambda x: x.lower(), context.args)))
+            for web in WEBS:
+                context.bot.send_message(
+                    chat_id=update.effective_chat.id, text=search_in_api(game_name_for_search, web)
+                )
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id, text="No se ha encontrado el juego espeficado.")
 
     def __add_handlers(self):
         """
