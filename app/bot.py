@@ -1,5 +1,6 @@
 import logging
 
+import telegram
 from telegram.ext import Updater, CommandHandler
 
 from app.settings import BOT_TOKEN, WEBS, PLATFORMS
@@ -32,10 +33,17 @@ class TelegramBot:
         start_message = "Bienvenido al bot CatchMyGame, {}. \n\nEn este bot puede encontrar el juego deseado en " \
                         "las páginas precargadas y ver en dónde está más barato " \
                         "\U0001F60D\U0001F4B8.\n\n".format(update.effective_user.name) + self.__help_text + \
-                        "Espero que lo disfrute. \U0001F31A"
+                        "Espero que lo disfrute. \U0001F31A \n\n" \
+                        "<i>Bot realizado por Yorchly cuyo código está disponible en: {}\n" \
+                        "Las comprobaciones de los juegos se realizan gracias a la API proporcionada por " \
+                        "RAWG ({})</i>".format(
+                            "https://github.com/Yorchly/CatchMyGame",
+                            "https://rawg.io/"
+                        )
         context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=start_message
+            text=start_message,
+            parse_mode=telegram.ParseMode.HTML
         )
 
     def __help(self, update, context):
@@ -68,7 +76,9 @@ class TelegramBot:
                     chat_id=update.effective_chat.id, text=search_in_api(game_name_for_search, web)
                 )
         else:
-            context.bot.send_message(chat_id=update.effective_chat.id, text="No se ha encontrado el juego espeficado.")
+            context.bot.send_message(
+                chat_id=update.effective_chat.id, text="No se ha encontrado el juego especificado :(."
+            )
 
     def __add_handlers(self):
         """
