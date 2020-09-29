@@ -1,8 +1,62 @@
 from decimal import Decimal
+from datetime import datetime, timedelta
 
 import requests
 
-from app.settings import SEARCH_URL, GAMES_API
+from app.settings import SEARCH_URL, GAMES_API, CACHED_DATA, TIME_CACHED_DATA
+
+
+def get_cached_data(game_name):
+    """
+    Get game data that is cached in CACHED_DATA dict.
+    :param game_name:
+    :type game_name: str
+    :return: dict with game info if game is cached, False if not.
+    """
+    if game_name in CACHED_DATA:
+        return CACHED_DATA.get(game_name)
+    else:
+        return False
+
+
+def set_game_in_cached_data(game_name, link, price, currency):
+    """
+    Set game data in dict of cached data.
+    :param game_name:
+    :type game_name: str
+    :param link:
+    :type link: str
+    :param price:
+    :type price: Decimal
+    :param currency:
+    :type currency: str
+    :return:
+    """
+    data = {
+        "link": link,
+        "price": price,
+        "currency": currency,
+        "last_update": datetime.now()
+    }
+    if game_name in CACHED_DATA:
+        CACHED_DATA.get(game_name).update(data)
+    else:
+        CACHED_DATA[game_name] = data
+
+
+def check_last_update_cached_data(game_name):
+    """
+    Check if last time that game data was updated is not greater than TIME_CACHED_DATA minutes.
+    :param game_name:
+    :type game_name: str
+    :return: True in case that last time data was updated is greater than TIME_CACHED_DATA minutes, False if it's not.
+    """
+    diff = datetime.now() - CACHED_DATA.get(game_name).get("last_update")
+
+    if (diff.seconds / 60) >= TIME_CACHED_DATA:
+        return True
+    else:
+        return False
 
 
 def search_in_api(game_name, web):

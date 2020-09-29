@@ -26,3 +26,10 @@ PLATFORMS = (
     "playstation 4",
     "ps4",
 )
+
+# Data will be update after 5 minutes.
+TIME_CACHED_DATA = float(5)
+
+# Used to get a query faster. Data stored in CACHED_DATA will be updated depending on the minutes specified in
+# TIME_CACHED_DATA.
+CACHED_DATA = {}
