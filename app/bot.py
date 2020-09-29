@@ -77,7 +77,7 @@ class TelegramBot:
                 )
         else:
             context.bot.send_message(
-                chat_id=update.effective_chat.id, text="No se ha encontrado el juego especificado :(."
+                chat_id=update.effective_chat.id, text="No se ha encontrado el juego especificado \U0001F62D"
             )
 
     def __add_handlers(self):
