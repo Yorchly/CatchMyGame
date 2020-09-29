@@ -98,7 +98,8 @@ def search_in_api(game_name, web):
 
     return "Precio: {}\n" \
            "Moneda: {}\n" \
-           "Enlace: {}".format(price if price > Decimal(0) else "No se ha podido obtener", currency, link)
+           "Enlace: {}".format(price if price > Decimal(0) else "No se ha podido obtener o no hay stock",
+                               currency, link)
 
 
 def search_in_game_api(game_name):
