@@ -6,6 +6,17 @@ import requests
 from app.settings import SEARCH_URL, GAMES_API, CACHED_DATA, TIME_CACHED_DATA
 
 
+def set_time_in_cached_data():
+    """
+    Set created at time in CACHED_DATA.
+    :return:
+    """
+    if not CACHED_DATA:
+        CACHED_DATA.update({
+            "created_at": datetime.now()
+        })
+
+
 def get_cached_data(game_name):
     """
     Get game data that is cached in CACHED_DATA dict.
@@ -39,6 +50,9 @@ def set_game_in_cached_data(game_name, web, link, price, currency):
         },
         "last_update": datetime.now()
     }
+
+    set_time_in_cached_data()
+
     if game_name in CACHED_DATA:
         CACHED_DATA.get(game_name).update(data)
     else:

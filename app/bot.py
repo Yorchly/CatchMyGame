@@ -3,6 +3,7 @@ import logging
 import telegram
 from telegram.ext import Updater, CommandHandler
 
+from app.decorators import clean_cache
 from app.settings import BOT_TOKEN, WEBS, PLATFORMS
 from app.utils import search_in_api, search_in_game_api
 
@@ -59,6 +60,7 @@ class TelegramBot:
         )
 
     @staticmethod
+    @clean_cache
     def __search(update, context):
         game_name = ""
         for element in context.args:
