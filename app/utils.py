@@ -118,16 +118,16 @@ def search_in_api(game_name, web):
 
 def search_in_game_api(game_name):
     """
-    Check in GAMES_API if game searched by user exists. If response return a redirect, the game exists but with
-    a different slug in API.
+    Check in GAMES_API if game searched by user exists.
     :param game_name:
-    :return:
+    :type game_name: str
+    :return: str - name of game get from the API.
     """
     response = requests.get(GAMES_API + game_name).json()
+    results = response.get("results")
 
-    if response.get("redirect"):
-        return True
-    elif response.get("detail") == "Not found.":
-        return False
+    if results:
+        # Only name, from first item in list, is get from results.
+        return response.get("results")[0].get("name")
     else:
-        return True
+        return ""

@@ -14,7 +14,7 @@ SEARCH_URL = 'https://www.googleapis.com/customsearch/v1?cx={}&key={}&q='.format
 WEBS = ("eneba", "instantgaming", "amazon")
 
 # More info: https://api.rawg.io/docs/
-GAMES_API = "https://api.rawg.io/api/games/"
+GAMES_API = "https://api.rawg.io/api/games?search="
 
 PLATFORMS = (
     "pc",

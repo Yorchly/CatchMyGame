@@ -62,17 +62,11 @@ class TelegramBot:
     @staticmethod
     @clean_cache
     def __search(update, context):
-        game_name = ""
-        for element in context.args:
-            lower_element = element.lower()
-            # Excluding platform from game name in order to search it into game API.
-            if lower_element not in PLATFORMS:
-                game_name += lower_element
+        game_name = " ".join(list(map(lambda x: x.lower() if x.lower() not in PLATFORMS else "", context.args)))
 
-        game_exists = search_in_game_api(game_name)
+        game_name_for_search = search_in_game_api(game_name)
 
-        if game_exists:
-            game_name_for_search = "+".join(list(map(lambda x: x.lower(), context.args)))
+        if game_name_for_search:
             for web in WEBS:
                 context.bot.send_message(
                     chat_id=update.effective_chat.id, text=search_in_api(game_name_for_search, web)
