@@ -27,11 +27,11 @@ PLATFORMS = (
     "ps4",
 )
 
-# Data in cached var will be update after 5 minutes.
-TIME_CACHED_DATA = float(5)
+# Data in cached var will be update after 2 minutes.
+TIME_CACHED_DATA = float(2)
 
-# All cached var will be clear every 10 min
-TIME_TO_CLEAN_CACHED_VAR = float(10)
+# All cached var will be clear every 5 min
+TIME_TO_CLEAN_CACHED_VAR = float(5)
 
 # Used to get a query faster. Data stored in CACHED_DATA will be updated depending on the minutes specified in
 # TIME_CACHED_DATA.
