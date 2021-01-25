@@ -1,17 +1,21 @@
 import logging
+import re
 
+import telegram
 from telegram.ext import Updater, CommandHandler
 
-from app.settings import BOT_TOKEN
-
+from app.decorators import clean_cache
+from app.settings import BOT_TOKEN, WEBS, PLATFORMS
+from app.utils import search_in_api, search_in_game_api
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class TelegramBot:
     __help_text = "Los comandos que posee el bot son los siguientes (sin las comillas '' especificadas):\n\n " \
-                  "- '/search [nombre_juego]' -> Busca el juego en una de las páginas precargadas en la " \
-                  "aplicación\n\n " \
+                  "- '/search [nombre_juego]' -> Busca el juego en las páginas precargadas en el " \
+                  "bot. Ej: '/search Nier Automata'.\n\n " \
                   "- '/help' -> Muestra los comandos disponibles para el bot.\n\n "
 
     def __init__(self):
@@ -29,13 +33,20 @@ class TelegramBot:
         :param context:
         :return:
         """
-        start_message = "Bienvenido al bot CatchMyGame, {}. \n\nEn este bot puede encontrar el juego deseado en una " \
-                        "de las páginas precargadas y ver en dónde está más barato " \
+        start_message = "Bienvenido al bot CatchMyGame, {}. \n\nEn este bot puede encontrar el juego deseado en " \
+                        "las páginas precargadas y ver en dónde está más barato " \
                         "\U0001F60D\U0001F4B8.\n\n".format(update.effective_user.name) + self.__help_text + \
-                        "Espero que lo disfrute. \U0001F31A"
+                        "Espero que lo disfrute. \U0001F31A \n\n" \
+                        "<i>Bot realizado por Yorchly cuyo código está disponible en: {}\n" \
+                        "Las comprobaciones de los juegos se realizan gracias a la API proporcionada por " \
+                        "RAWG ({})</i>".format(
+                            "https://github.com/Yorchly/CatchMyGame",
+                            "https://rawg.io/"
+                        )
         context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=start_message
+            text=start_message,
+            parse_mode=telegram.ParseMode.HTML
         )
 
     def __help(self, update, context):
@@ -51,9 +62,24 @@ class TelegramBot:
         )
 
     @staticmethod
+    @clean_cache
     def __search(update, context):
-        # TODO -> Add search method.
-        pass
+        game_name = " ".join(
+            re.findall(
+                r'[a-zA-Z0-9]+', ' '.join(context.args)
+            )
+        ).lower()
+        game_name_for_search = search_in_game_api(game_name)
+
+        if game_name_for_search:
+            for web in WEBS:
+                context.bot.send_message(
+                    chat_id=update.effective_chat.id, text=search_in_api(game_name_for_search, web)
+                )
+        else:
+            context.bot.send_message(
+                chat_id=update.effective_chat.id, text="No se ha encontrado el juego especificado \U0001F62D"
+            )
 
     def __add_handlers(self):
         """
@@ -77,5 +103,9 @@ class TelegramBot:
     """
 
     def start_bot(self):
-        self.__updater.start_polling()
-        self.__updater.idle()
+        try:
+            self.__updater.start_polling()
+            logger.info("Bot started...")
+            self.__updater.idle()
+        except Exception as e:
+            raise e
