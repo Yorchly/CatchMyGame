@@ -1,4 +1,5 @@
 import logging
+import re
 
 import telegram
 from telegram.ext import Updater, CommandHandler
@@ -8,6 +9,7 @@ from app.settings import BOT_TOKEN, WEBS, PLATFORMS
 from app.utils import search_in_api, search_in_game_api
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 class TelegramBot:
@@ -62,8 +64,11 @@ class TelegramBot:
     @staticmethod
     @clean_cache
     def __search(update, context):
-        game_name = " ".join(list(map(lambda x: x.lower() if x.lower() not in PLATFORMS else "", context.args)))
-
+        game_name = " ".join(
+            re.findall(
+                r'[a-zA-Z0-9]+', ' '.join(context.args)
+            )
+        ).lower()
         game_name_for_search = search_in_game_api(game_name)
 
         if game_name_for_search:
@@ -98,5 +103,9 @@ class TelegramBot:
     """
 
     def start_bot(self):
-        self.__updater.start_polling()
-        self.__updater.idle()
+        try:
+            self.__updater.start_polling()
+            logger.info("Bot started...")
+            self.__updater.idle()
+        except Exception as e:
+            raise e

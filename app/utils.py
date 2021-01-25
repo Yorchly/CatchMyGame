@@ -99,14 +99,8 @@ def search_in_api(game_name, web):
 
         parsed_response = response.json()
         link = parsed_response.get("items")[0].get("link")
-
-        # TODO -> Implement Web Scrapping for Amazon.
-        if web != "amazon":
-            price = Decimal(parsed_response.get("items")[0].get("pagemap").get("offer")[0].get("price"))
-            currency = parsed_response.get("items")[0].get("pagemap").get("offer")[0].get("pricecurrency")
-        else:
-            price = Decimal(0)
-            currency = "No se ha podido obtener"
+        price = Decimal(0)
+        currency = "No se ha podido obtener"
 
         set_game_in_cached_data(game_name, web, link, price, currency)
 

@@ -11,21 +11,10 @@ SEARCH_URL = 'https://www.googleapis.com/customsearch/v1?cx={}&key={}&q='.format
     SEARCH_ENGINE_ID, CUSTOM_SEARCH_API
 )
 
-WEBS = ("eneba", "instantgaming", "amazon")
+WEBS = ("eneba", "instantgaming")
 
 # More info: https://api.rawg.io/docs/
 GAMES_API = "https://api.rawg.io/api/games?search="
-
-PLATFORMS = (
-    "pc",
-    "xbox360"
-    "xbox 360",
-    "xbox one",
-    "playstation 3",
-    "ps3",
-    "playstation 4",
-    "ps4",
-)
 
 # Data in cached var will be update after 2 minutes.
 TIME_CACHED_DATA = float(2)
