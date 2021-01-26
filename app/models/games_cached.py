@@ -33,5 +33,6 @@ class GamesCached:
             if self.last_replaced_position == self.games_max_len:
                 self.last_replaced_position = 0
             self.games[self.last_replaced_position] = game
+            self.last_replaced_position += 1
         else:
             self.games.append(game)
