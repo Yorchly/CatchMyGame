@@ -16,3 +16,5 @@ SEARCH_URL = 'https://www.googleapis.com/customsearch/v1?cx={}&key={}&q='.format
 WEBS = ("eneba", "instantgaming", "steam store")
 
 GAMES_CACHED = GamesCached()
+
+ENEBA_FILE_NAME = "eneba.jl"

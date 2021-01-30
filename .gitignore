@@ -130,3 +130,5 @@ dmypy.json
 
 # Excluding pycharm files
 .idea/
+
+*.jl
