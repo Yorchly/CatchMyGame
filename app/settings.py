@@ -17,4 +17,8 @@ WEBS = ("eneba", "instantgaming", "steam store")
 
 GAMES_CACHED = GamesCached()
 
-ENEBA_FILE_NAME = "eneba.jl"
+ENEBA_FILENAME = "eneba.jl"
+
+INSTANTGAMING_FILENAME = "instantgaming.jl"
+
+STEAM_FILENAME = "steam.jl"

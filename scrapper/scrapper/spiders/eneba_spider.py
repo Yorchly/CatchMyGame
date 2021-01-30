@@ -1,13 +1,13 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from app.settings import ENEBA_FILE_NAME
+from app.settings import ENEBA_FILENAME
 from scrapper.scrapper.spiders.common_spider import CommonSpider
 
 
 class EnebaSpider(CommonSpider):
     name = "eneba"
-    file_name = ENEBA_FILE_NAME
+    file_name = ENEBA_FILENAME
     url = "https://www.eneba.com/es/marketplace?text={}&sortBy=RELEVANCE_DESC"
     games_xpath = "//div[@class='_2rxjGA _3nGiQg']"
 
