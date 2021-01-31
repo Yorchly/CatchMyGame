@@ -5,7 +5,7 @@ HELP_TEXT = "Los comandos que posee el bot son los siguientes (sin las comillas 
 
 START_MESSAGE = "Bienvenido al bot CatchMyGame, {}. \n\nEn este bot puede encontrar el juego deseado en " \
                 "las páginas precargadas y ver en dónde está más barato. Para más información utilizar el comando" \
-                "<b>\\help</b> \U0001F60D\U0001F4B8.\n\n" \
+                " <b>/help</b> \U0001F60D\U0001F4B8.\n\n" \
                 "Espero que lo disfrute. \U0001F31A \n\n" \
                 "<i>Bot realizado por Yorchly cuyo código está disponible en: https://github.com/Yorchly/CatchMyGame</i>\n"\
 
