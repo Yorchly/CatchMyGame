@@ -2,7 +2,7 @@ import logging
 from telegram.ext import Updater, CommandHandler
 
 from app.bot.bot_commands import BotCommands
-from app.settings import BOT_TOKEN
+from app.settings import BOT_TOKEN, ENV, PORT, HEROKU_APP_NAME
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,7 +13,11 @@ class TelegramBot:
         self.__updater = Updater(token=BOT_TOKEN, use_context=True)
         self.__add_handlers()
         try:
-            self.__updater.start_polling()
+            if ENV == "debug":
+                self.__updater.start_polling()
+            elif ENV == "prod":
+                self.__updater.start_webhook(listen="0.0.0.0", port=PORT, url_path=BOT_TOKEN)
+                self.__updater.bot.set_webhook("https://{}.herokuapp.com/{}".format(HEROKU_APP_NAME, BOT_TOKEN))
             logger.info("Bot started...")
             self.__updater.idle()
         except Exception as e:
