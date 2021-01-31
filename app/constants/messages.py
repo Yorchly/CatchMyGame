@@ -7,7 +7,7 @@ START_MESSAGE = "Bienvenido al bot CatchMyGame, {}. \n\nEn este bot puede encont
                 "las páginas precargadas y ver en dónde está más barato. Para más información utilizar el comando" \
                 "<b>\\help</b> \U0001F60D\U0001F4B8.\n\n" \
                 "Espero que lo disfrute. \U0001F31A \n\n" \
-                "<i>Bot realizado por Yorchly cuyo código está disponible en: https://github.com/Yorchly/CatchMyGame\n"\
+                "<i>Bot realizado por Yorchly cuyo código está disponible en: https://github.com/Yorchly/CatchMyGame</i>\n"\
 
 PROCESSING_REQUEST = "Estamos procesando su petición. Espere un momento..."
 
