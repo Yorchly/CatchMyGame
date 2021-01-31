@@ -15,5 +15,4 @@ GAME_NOT_FOUND = "No se ha encontrado el juego especificado \U0001F62D"
 
 GAME_MESSAGE = "Nombre del juego: {}\n" \
                "Precio: <b>{}</b>\n" \
-               "Moneda: <b>{}</b>\n" \
                "Enlace: {}\n"
