@@ -6,8 +6,8 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN")
 
 GAMES_CACHED = GamesCached()
 
-ENEBA_FILENAME = "eneba.jl"
+ENV = os.environ.get("ENV", "debug")
 
-INSTANTGAMING_FILENAME = "instantgaming.jl"
+PORT = int(os.environ.get('PORT', '8443'))
 
-STEAM_FILENAME = "steam.jl"
+HEROKU_APP_NAME = os.environ.get("HEROKU_APP_NAME", "")
