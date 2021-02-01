@@ -16,6 +16,7 @@ def get_games_results(game_name: str, web: str = "all"):
     """
     games = []
     not_formatted_games = []
+    time.sleep(get_random_delay())
     if web == "eneba":
         not_formatted_games.extend(EnebaScrapper(game_name).get_content())
     elif web == "instantgaming":

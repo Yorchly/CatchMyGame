@@ -51,7 +51,7 @@ class BotCommands:
         games = GAMES_CACHED.search_game_by_name_in_search(game_name)
 
         if not games:
-            games = get_games_results(game_name, "all")
+            games = get_games_results(game_name)
             GAMES_CACHED.add_games(games)
 
         for game in games:
