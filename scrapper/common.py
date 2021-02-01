@@ -24,7 +24,7 @@ class CommonScrapper:
     # Games list obtained with xpath.
     games_xpath = ""
 
-    def get_content(self, elements: int =0):
+    def get_content(self, elements: int = 3):
         elements = elements if elements > 0 else self.max_count
         count = 0
         games = []

@@ -3,7 +3,7 @@ import re
 
 from scrapper.common import CommonScrapper
 from scrapper.settings import INSTANTGAMING_FILENAME
-from scrapper.utils import formatting_price, formatting_price_2
+from scrapper.utils import formatting_price_2
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
