@@ -10,7 +10,7 @@ USER_AGENTS = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0"
 )
 
-DELAYS = (1, 2, 3)
+DELAYS = (2, 3, 4)
 
 REFERER = "https://www.google.es"
 
