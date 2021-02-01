@@ -31,13 +31,14 @@ def get_games_results(game_name: str, web: str = "all"):
         not_formatted_games.extend(SteamScrapper(game_name).get_content())
 
     for game in not_formatted_games:
-        games.append(
-            Game(
-                title=game.get("title"),
-                price=game.get("price"),
-                link=game.get("link"),
-                search=game_name
+        if game:
+            games.append(
+                Game(
+                    title=game.get("title"),
+                    price=game.get("price"),
+                    link=game.get("link"),
+                    search=game_name
+                )
             )
-        )
 
     return games

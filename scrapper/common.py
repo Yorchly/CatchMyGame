@@ -36,6 +36,8 @@ class CommonScrapper:
             html = response.text
             html_location = os.path.join(HTML_DIR, self.filename)
 
+            logger.info("\n\n--------------HTML content-------------\n\n{}\n\n".format(html))
+
             with open(html_location, "w", encoding="utf-8") as file:
                 file.write(html)
 
