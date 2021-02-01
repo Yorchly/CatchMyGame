@@ -30,7 +30,7 @@ class CommonScrapper:
         count = 0
         games = []
         logger.info("Getting response for {}".format(self.url))
-        response = requests.get(self.url, headers=self.headers)
+        response = requests.get(self.url, headers=self.headers, timeout=5)
         if response.status_code == 200:
             logger.info("Response obtained for {} successfully".format(self.url))
             html = response.text
