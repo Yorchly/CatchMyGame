@@ -3,7 +3,6 @@ import os
 
 import requests
 from lxml import etree
-from lxml.etree import _Element
 
 from scrapper.settings import REFERER, HTML_DIR
 from scrapper.utils import get_random_ua
@@ -36,8 +35,6 @@ class CommonScrapper:
             html = response.text
             html_location = os.path.join(HTML_DIR, self.filename)
 
-            logger.info("\n\n--------------HTML content-------------\n\n{}\n\n".format(html))
-
             with open(html_location, "w", encoding="utf-8") as file:
                 file.write(html)
 
@@ -53,7 +50,7 @@ class CommonScrapper:
         logger.info("Games obtained for {} -> {}".format(self.url, games))
         return games
 
-    def get_game(self, element: _Element):
+    def get_game(self, element):
         """
         You have to override this function in order to get games info
         :param element:
