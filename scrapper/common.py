@@ -50,6 +50,8 @@ class CommonScrapper:
                     count += 1
                 else:
                     break
+        else:
+            logger.error("Bad response ({}) from request -> {}".format(response.status_code, response.url))
 
         logger.info("Games obtained for {} -> {}".format(self.url, games))
         return games
