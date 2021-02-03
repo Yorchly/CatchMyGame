@@ -16,6 +16,7 @@ class SteamScrapper(CommonScrapper):
 
     def __init__(self, game_name: str):
         self.url = self.url.format(game_name)
+        super(SteamScrapper, self).__init__()
 
     def get_game(self, element):
         title = element.xpath(".//span[@class='title']/text()")

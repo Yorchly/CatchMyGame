@@ -15,6 +15,7 @@ class EnebaScrapper(CommonScrapper):
 
     def __init__(self, game_name: str):
         self.url = self.url.format(game_name)
+        super(EnebaScrapper, self).__init__()
 
     def get_game(self, element):
         title = element.xpath(".//div[@class='_1ZwRcm']/span/text()")
