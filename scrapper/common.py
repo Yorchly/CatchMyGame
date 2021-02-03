@@ -24,7 +24,7 @@ class CommonScrapper:
     # Games list obtained with xpath.
     games_xpath = ""
 
-    def get_content(self, elements: int = 3):
+    def get_content(self, elements: int = 1):
         elements = elements if elements > 0 else self.max_count
         count = 0
         games = []
@@ -32,6 +32,7 @@ class CommonScrapper:
         response = requests.get(self.url, headers=self.headers, timeout=5)
         if response.status_code == 200:
             logger.info("Response obtained for {} successfully".format(self.url))
+            logger.info("Url from request -> {}".format(response.url))
             html = response.text
             html_location = os.path.join(HTML_DIR, self.filename)
 
