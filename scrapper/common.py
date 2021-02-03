@@ -13,16 +13,19 @@ logger = logging.getLogger(__name__)
 
 class CommonScrapper:
     url = ""
-    headers = {
-        "user-agent": get_random_ua(),
-        "referer": REFERER,
-        'Content-Type': 'text/html',
-    }
     max_count = 1
     # Filename where html code obtained from requests will be saved.
     filename = ""
     # Games list obtained with xpath.
     games_xpath = ""
+
+    def __init__(self):
+        # In order to dict to not to be persistent
+        self.headers = {
+            "user-agent": get_random_ua(),
+            "referer": REFERER,
+            'Content-Type': 'text/html',
+        }
 
     def get_content(self, elements: int = 1):
         elements = elements if elements > 0 else self.max_count
