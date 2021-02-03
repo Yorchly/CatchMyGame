@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class EnebaScrapper(CommonScrapper):
-    url = "https://www.eneba.com/es/marketplace?text={}&sortBy=RELEVANCE_DESC"
+    url = "https://www.eneba.com/es/store/all?text={}&sortBy=RELEVANCE_DESC"
     filename = ENEBA_FILENAME
     games_xpath = "//div[@class='_2rxjGA _3nGiQg']"
 
